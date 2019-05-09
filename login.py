@@ -1,29 +1,20 @@
-from passlib.context import CryptContext
+from passlib.hash import sha256_crypt
 import tkinter as tk
 import tkinter.messagebox as messbox
 from homePage import HomePage
-
-pwd_context = CryptContext(
-	schemes=["pbkdf2_sha256"],
-	default="pbkdf2_sha256",
-	pbkdf2_sha256__default_rounds=30000
-)
-
-def encrypt_password(password):
-	return pwd_context.encrypt(password)
-
+import sqlite3
 
 def check_encrypted_password(password, hashed):
-	return pwd_context.verify(password, hashed)
+	return sha256_crypt.verify(password, hashed)
 
 class Login():
 	def __init__(self, root=None):
+		self.root = root
 		self.username = tk.StringVar()
 		self.password = tk.StringVar()
-		self.create_page(root)
+		self.create_page()
 
-	def create_page(self, root=None):
-		self.root = root
+	def create_page(self):
 		self.root.geometry('300x200')
 		self.page = tk.Frame(self.root)
 		self.page.pack()
@@ -41,17 +32,17 @@ class Login():
 	def login(self):
 		username = self.username.get()
 		password = self.password.get()
-		if username == 'yzx' and password == '123':
+		#连接数据库，拿到数据里的username和password，然后对比
+		db = sqlite3.connect('app.db')
+		connect = db.cursor()
+		cursor = connect.execute('SELECT password FROM account WHERE username="%s" LIMIT 1'%self.username.get())
+		isExist = False
+		encryptedPw = ""
+		for row in cursor:
+			encryptedPw = row[0]
+			isExist = True
+		if isExist and check_encrypted_password(self.password.get(), encryptedPw):
 			self.page.destroy()
 			HomePage(self.root)
 		else:
 			messbox.showinfo(title="错误", message="账号密码错误")
-
-
-
-
-# password = "123"
-
-# hashed = encrypt_password(password)
-# print("hashed:%s"%hashed)
-# print(check_encrypted_password("dd", hashed))
