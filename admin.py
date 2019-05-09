@@ -58,6 +58,7 @@ def exit(event):
 def main():
 	create_db()
 	app.title("管理员")
+	app.iconbitmap("res\\admin.ico")
 	app.bind('<Escape>' , exit)
 	Admin(app)
 	app.mainloop()

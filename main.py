@@ -14,7 +14,7 @@ def create_db():
 	db.commit()
 	db.close()
 
-	
+
 app = tk.Tk()
 def exit(event):
 	app.destroy()
@@ -22,6 +22,7 @@ def exit(event):
 def main():
 	create_db()
 	app.title("某某软件")
+	app.iconbitmap("res\\app.ico")
 	app.bind('<Escape>' , exit)
 	Login(app)
 	app.mainloop()
