@@ -1,14 +1,17 @@
 from passlib.hash import sha256_crypt
 import tkinter as tk
 import tkinter.messagebox as messbox
-from homePage import HomePage
 import sqlite3
+import logging
+
+logger = logging.getLogger('main.login')
 
 def check_encrypted_password(password, hashed):
 	return sha256_crypt.verify(password, hashed)
 
 class Login():
-	def __init__(self, root=None):
+	def __init__(self, root, viewManager):
+		self.viewManager = viewManager
 		self.root = root
 		self.username = tk.StringVar()
 		self.password = tk.StringVar()
@@ -28,11 +31,11 @@ class Login():
 		tk.Entry(self.page, textvariable=self.password).grid(row=2,column=1)
 
 		tk.Button(self.page, text="确定",command=self.login).grid(row=3)
+		self.root.bind('<Return>' , self.login)
 
-	def login(self):
+	def login(self, event=None):
 		username = self.username.get()
 		password = self.password.get()
-		#连接数据库，拿到数据里的username和password，然后对比
 		db = sqlite3.connect('app.db')
 		connect = db.cursor()
 		cursor = connect.execute('SELECT password FROM account WHERE username="%s" LIMIT 1'%self.username.get())
@@ -43,6 +46,11 @@ class Login():
 			isExist = True
 		if isExist and check_encrypted_password(self.password.get(), encryptedPw):
 			self.page.destroy()
-			HomePage(self.root)
+			self.root.unbind('<Return>' )
+			try:
+				self.viewManager.to_page('HomePage')
+			except Exception:
+				logger.error('Faild to get result', exc_info=True)
+			
 		else:
 			messbox.showinfo(title="错误", message="账号密码错误")
