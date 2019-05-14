@@ -1,10 +1,8 @@
-import tkinter as tk
-import logging
+from basicPackage import *
 
 logger = logging.getLogger('main.addNewContrView')
 class AddNewContrView():
-	def __init__(self, root, viewManager):
-		self.viewManager = viewManager
+	def __init__(self, root):
 		self.root = root
 		self.create_page()
 	def create_page(self):
@@ -16,4 +14,5 @@ class AddNewContrView():
 		tk.Button(self.page, text="打税合同",command=self.test).grid(row=2, column=2)
 	def test(self):
 		self.page.destroy()
-		self.viewManager.to_page('HomePage')
+		g_.theViewManager.open_view('HomePage')
+

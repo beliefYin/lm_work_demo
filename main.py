@@ -1,10 +1,10 @@
-import tkinter as tk
-import sqlite3
-import logging
-from viewManager import ViewManager
+from basicPackage import *
+import initView
+import globalVar as g_
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')#, filename="log.txt")
 logger = logging.getLogger('main')
+app = tk.Tk()
 
 
 def create_db():
@@ -18,8 +18,6 @@ def create_db():
 	db.commit()
 	db.close()
 
-
-app = tk.Tk()
 def exit(event):
 	app.destroy()
 
@@ -28,11 +26,12 @@ def main():
 	app.title("某某软件")
 	app.iconbitmap("res\\app.ico")
 	app.bind('<Escape>' , exit)
-	ViewManager(app)
+	g_.theViewManager.set_root(app)
+	g_.theViewManager.open_view('Login')
 	app.mainloop()
 
 if __name__ == '__main__':
 	try:
 		main()
 	except Exception:
-		logger.error('Faild to get result', exc_info=True)
+		logger.error('Login page error', exc_info=True)

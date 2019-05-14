@@ -1,10 +1,8 @@
-import tkinter as tk
-import logging
+from basicPackage import *
 
 logger = logging.getLogger('main.homePage')
 class HomePage():
-	def __init__(self, root, viewManager):
-		self.viewManager = viewManager
+	def __init__(self, root):
 		self.root = root
 		self.create_page()
 	def create_page(self):
@@ -29,9 +27,6 @@ class HomePage():
 	def add_new_contract(self):
 		self.page.destroy()
 		try:
-			self.viewManager.to_page('AddNewContrView')
+			g_.theViewManager.open_view('AddNewContrView')
 		except Exception:
 			logger.error('AddNewContrView error', exc_info=True)
-
-
-		
