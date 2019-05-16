@@ -15,5 +15,8 @@ class AddNewContrView():
 		tk.Button(self.page, text="打税合同",command=lambda:self.open_contract_view(name="factory")).grid(row=2, column=2)
 	def open_contract_view(self, name):
 		self.page.destroy()
-		g_.theViewManager.open_view('ContractView', arg=name)
+		try:
+			g_.theViewManager.open_view('ContractView', arg=name)
+		except Exception:
+			logger.error('ContractView error', exc_info=True)
 

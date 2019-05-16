@@ -1,6 +1,7 @@
 from basicPackage import *
 import initView
 import globalVar as g_
+import os
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')#, filename="log.txt")
 logger = logging.getLogger('main')
@@ -18,11 +19,20 @@ def create_db():
 	db.commit()
 	db.close()
 
+def create_dir():
+	dir_name = {"template", "template\\newfile"}
+	cur_path = os.getcwd()
+	for x in dir_name:
+		path = cur_path+"\\"+x
+		if not os.path.exists(path):
+			os.makedirs(path)
+
 def exit(event):
 	app.destroy()
 
 def main():
 	create_db()
+	create_dir()
 	app.title("某某软件")
 	app.iconbitmap("res\\app.ico")
 	app.bind('<Escape>' , exit)

@@ -32,6 +32,10 @@ legalRepres["showType"] = "optional_text"
 legalRepres["prefix"] = "法定代表人："
 view["legalRepres"] = legalRepres
 
+lending = {}
+lending["name"] = "租聘物"
+view["lending"] = lending
+
 lendingAddr = {}
 lendingAddr["name"] = "租聘物地址"
 view["lendingAddr"] = lendingAddr

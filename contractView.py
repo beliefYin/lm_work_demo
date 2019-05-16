@@ -4,7 +4,7 @@ from docxtpl import DocxTemplate
 logger = logging.getLogger('main.contractView')
 
 template_path = 'template\\'
-new_file_path = 'template\\newfile'
+new_file_path = 'template\\newfile\\'
 
 class ContractView():
 	def __init__(self, root, name):
@@ -26,7 +26,7 @@ class ContractView():
 		view = self.config["view"]
 		now_row = 0
 		for k in view:
-			if "showType" not in view[k] or view[k]["showType"] == "text":
+			if "showType" not in view[k] or view[k]["showType"] == "text" or view[k]["showType"] == "optional_text":
 				varname = "var"+str(now_row)
 				tk.Label(self.page, text=view[k]["name"]).grid(row=now_row, column=0)
 				self.var_dict[varname] = tk.StringVar()
@@ -40,19 +40,21 @@ class ContractView():
 		context = {}
 		now_row = 0
 		for k in view:
-			if "showType" not in view[k] or view[k]["showType"] == "text":
+			if "showType" not in view[k] or view[k]["showType"] == "text" :
 				varname = "var"+str(now_row)
 				context[k] = self.var_dict[varname].get()
 			elif view[k]["showType"] == "optional_text":
 				varname = "var"+str(now_row)
-				context[k] = view[k]["prefix"] + self.var_dict[varname].get()
+				if self.var_dict[varname].get() == "":
+					context[k] = ""
+				else:
+					context[k] = view[k]["prefix"] + self.var_dict[varname].get()
 			now_row += 1
 		doc.render(context)  
 		doc.save(new_file_path+self.config["newfilename"])
 
 	def back(self):
 		self.page.destroy()
-		self.root.unbind('<Return>' )
 		try:
 			g_.theViewManager.open_view('AddNewContrView')
 		except Exception:
