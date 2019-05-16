@@ -1,0 +1,21 @@
+filename = "厂房合同模板.docx"   <-----这里填模板的名字，一定要有
+newfilename = "厂房合同.docx"   <-----这里保存的文件名字，保存的文件在template\newfile目录下，一定要有
+view = {}  <----这个表示界面，一定要有
+
+----------一块就是一行-----------
+
+firstParty = {}   <------firstParty这个名字就是word模板文档里对应的{{firstParty}}，到时候会把软件里填进去的东西替换掉{{firstParty}}
+firstParty["showType"] = "text"  <------text是输入框，optional_text是选填的输入框（这一行可以省略，默认是text）
+firstParty["name"] = "甲方名称"   <------软件里显示的名字
+view["firstParty"] = firstParty   <----把上面的配置生成到界面里
+
+----------一块就是一行-----------
+
+---------------------选填文字（optional_text）-----------------
+legalRepres = {}
+legalRepres["name"] = "法定代表人"
+legalRepres["showType"] = "optional_text"  <------optional_text是选填的输入框（这一行可以省略，默认是text）
+legalRepres["prefix"] = "法定代表人："  <------开头
+view["legalRepres"] = legalRepres
+---------------------选填文字（optional_text）-----------------
+
